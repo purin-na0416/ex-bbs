@@ -17,7 +17,7 @@
   <hr>
 
   <!-- 記事一覧 -->
-  <span th:each="article : ${application.articleList}" name="id">
+  <span th:each="article : ${application.articleList}">
     投稿者名：
     <span th:text="${article.name}"></span><br>
     投稿内容：<br><br>
@@ -25,6 +25,7 @@
 
     <!-- 記事とコメントを削除する -->
     <form th:action="@{/top/delete}" method="get">
+      <input type="hidden" name="id" th:value="${article.id}">
       <button>記事削除</button>
     </form>
     <br>
