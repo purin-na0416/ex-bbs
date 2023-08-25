@@ -40,7 +40,8 @@ public class CommentRepository {
     String sql = """
                   select id, name, content, article_id 
                   from comments 
-                  where article_id =:articleId;
+                  where article_id =:articleId
+                  order by id desc;
                   """;
                       
     SqlParameterSource param = new MapSqlParameterSource().addValue("articleId", id);
@@ -51,7 +52,7 @@ public class CommentRepository {
   }
 
   /**
-   * コメントをデータベースに投稿する
+   * コメントをデータベースに登録する
    * 
    * @param comment
    */

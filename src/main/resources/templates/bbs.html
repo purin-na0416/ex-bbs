@@ -30,7 +30,6 @@
     <br>
 
     <!-- 記事の下に関連するコメントを表示する -->
-    
     <span th:each="comment : ${article.commentList}">
       コメント者名：
       <span th:text="${comment.name}"></span><br>
@@ -41,6 +40,7 @@
 
     <!-- コメント投稿 -->
     <form th:action="@{/top/comment}" method="post">
+      <input type="hidden" name="articleId" th:value="${article.id}">
       名前：<br>
       <input type="text" name="name"><br>
       コメント：<br>
