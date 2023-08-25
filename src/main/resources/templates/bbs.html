@@ -6,6 +6,7 @@
   <title>Document</title>
 </head>
 <body>
+  <!-- 記事投稿 -->
   <form th:action="@{/top/article}" method="post">
     投稿者名：
     <input type="text" name="name"><br>
@@ -15,23 +16,30 @@
   </form>
   <hr>
 
-  <span th:each="article : ${application.articleList}">
+  <!-- 記事一覧 -->
+  <span th:each="article : ${application.articleList}" name="id">
     投稿者名：
     <span th:text="${article.name}"></span><br>
     投稿内容：<br><br>
     <span th:text="${article.content}"></span><br><br>
+
+    <!-- 記事とコメントを削除する -->
     <form th:action="@{/top/delete}" method="get">
       <button>記事削除</button>
     </form>
     <br>
 
-    <span th:each="comment : ${commentList}">
+    <!-- 記事の下に関連するコメントを表示する -->
+    
+    <span th:each="comment : ${article.commentList}">
       コメント者名：
       <span th:text="${comment.name}"></span><br>
       コメント内容：<br><br>
       <span th:text="${comment.content}"></span><br><br>
     </span>
+    
 
+    <!-- コメント投稿 -->
     <form th:action="@{/top/comment}" method="post">
       名前：<br>
       <input type="text" name="name"><br>

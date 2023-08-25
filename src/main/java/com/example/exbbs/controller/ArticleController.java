@@ -1,6 +1,5 @@
 package com.example.exbbs.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +36,14 @@ public class ArticleController {
    */
   public String index() {
     List<Article> articleList = articleRepository.findAll();
-    application.setAttribute("articleList", articleList);
-
-    List<Comment> commentList = new ArrayList<>();
+    
+    //各記事のコメントリストに関連したコメントを追加する
     for(Article article : articleList) {
-      commentList = commentRepository.findByArticleId(article.getId());
+      article.setCommentList(commentRepository.findByArticleId(article.getId()));
     }
 
-    application.setAttribute("commentList", commentList);
-
+    application.setAttribute("articleList", articleList);
+    
     return "bbs";
   }
 
@@ -65,9 +63,10 @@ public class ArticleController {
   @PostMapping("/comment")
 
   /**
+   * コメントを投稿する
    * 
    * @param comment
-   * @return
+   * @return bbs.htmlにリダイレクト
    */
   public String insertComment(Comment comment) {
     commentRepository.insert(comment);
@@ -75,7 +74,17 @@ public class ArticleController {
   }
 
   @GetMapping("/delete")
-  public String deleteArticle() {
+
+  /**
+   * 記事とそれに関連したコメントを削除する
+   * 
+   * @param id 記事の投稿ID
+   * @return bbs.htmlにリダイレクト
+   */
+  public String deleteArticle(int id) {
+    articleRepository.deleteById(id);
+    commentRepository.deleteByArticleId(id);
+
     return "redirect:/top";
   }
 }

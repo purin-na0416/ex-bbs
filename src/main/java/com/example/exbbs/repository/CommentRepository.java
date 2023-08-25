@@ -65,6 +65,11 @@ public class CommentRepository {
     template.update(sql, param);
   }
 
+  /**
+   * 投稿IDを指定してそのIDに結びつけられたコメントを削除する
+   * 
+   * @param articleId
+   */
   public void deleteByArticleId(int articleId) {
     String sql = "delete from comments where article_id =:articleId;";
 
