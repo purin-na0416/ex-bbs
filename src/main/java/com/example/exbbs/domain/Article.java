@@ -39,5 +39,6 @@ public class Article {
   public void setCommentList(List<Comment> commentList) {
     this.commentList = commentList;
   }
+ 
   
 }
