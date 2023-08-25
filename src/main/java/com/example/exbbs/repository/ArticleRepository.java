@@ -58,6 +58,11 @@ public class ArticleRepository {
     return articleList;
   }
 
+  /**
+   * 投稿IDを指定して記事を削除する
+   * 
+   * @param id
+   */
   public void deleteById(int id) {
     String sql = "delete from articles where id =:id;";
 
