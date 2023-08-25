@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form th:action="@{/top/article}" method="post">
+    投稿者名：
+    <input type="text" name="name"><br>
+    投稿内容：<br>
+    <textarea name="content" cols="40" rows="10"></textarea><br>
+    <button>記事投稿</button>
+  </form>
+  <hr>
+
+  <span th:each="article : ${application.articleList}">
+    投稿者名：
+    <span th:text="${article.name}"></span><br>
+    投稿内容：<br><br>
+    <span th:text="${article.content}"></span><br><br>
+    <form th:action="@{/top/delete}" method="get">
+      <button>記事削除</button>
+    </form>
+    <br>
+
+    <span th:each="comment : ${commentList}">
+      コメント者名：
+      <span th:text="${comment.name}"></span><br>
+      コメント内容：<br><br>
+      <span th:text="${comment.content}"></span><br><br>
+    </span>
+
+    <form th:action="@{/top/comment}" method="post">
+      名前：<br>
+      <input type="text" name="name"><br>
+      コメント：<br>
+      <textarea name="content" cols="40" rows="10"></textarea><br>
+      <button>コメント投稿</button>
+    </form>  
+    <hr>
+  </span>
+</body>
+</html>
