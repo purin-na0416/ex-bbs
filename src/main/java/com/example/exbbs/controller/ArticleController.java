@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import com.example.exbbs.domain.Comment;
 import com.example.exbbs.repository.ArticleRepository;
 import com.example.exbbs.repository.CommentRepository;
 
-import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/top")
@@ -24,9 +24,6 @@ public class ArticleController {
   @Autowired
   private CommentRepository commentRepository;
 
-  @Autowired
-  private ServletContext application;
-
   @GetMapping("")
 
   /**
@@ -34,15 +31,17 @@ public class ArticleController {
    * 
    * @return bbs.htmlに遷移する
    */
-  public String index() {
+  public String index(Model model) {
     List<Article> articleList = articleRepository.findAll();
     
     //各記事のコメントリストに関連したコメントを追加する
+    /*
     for(Article article : articleList) {
       article.setCommentList(commentRepository.findByArticleId(article.getId()));
     }
+    */
 
-    application.setAttribute("articleList", articleList);
+    model.addAttribute("articleList", articleList);
     
     return "bbs";
   }

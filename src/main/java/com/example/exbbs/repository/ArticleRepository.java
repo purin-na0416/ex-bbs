@@ -3,7 +3,6 @@ package com.example.exbbs.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,16 +17,6 @@ import com.example.exbbs.domain.Article;
 public class ArticleRepository {
   @Autowired
   private NamedParameterJdbcTemplate template;
-
-  private static final RowMapper<Article> ARTICLE_ROW_MAPPER = (rs, i) -> {
-    Article article = new Article();
-
-    article.setId(rs.getInt("id"));
-    article.setName(rs.getString("name"));
-    article.setContent(rs.getString("content"));
-    
-    return article;
-  };
 
   /**
    * 記事をデータベースに挿入する
@@ -49,11 +38,17 @@ public class ArticleRepository {
    */
   public List<Article> findAll() {
     String sql = """
-                  select id, name, content
-                  from articles order by id desc;
+                  select a.id, a.name, a.content, c.id as com_id, 
+                    c.name as com_name, c.content as com_content, 
+                    c.article_id
+                  from articles a
+                  left outer join comments c
+                  on a.id = c.article_id
+                  order by a.id desc, c.id desc;
                  """;
+    ArticleResultSetExtractor extractor = new ArticleResultSetExtractor();
 
-    List<Article> articleList = template.query(sql, ARTICLE_ROW_MAPPER);
+    List<Article> articleList = template.query(sql, extractor);
 
     return articleList;
   }
